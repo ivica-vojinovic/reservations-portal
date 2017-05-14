@@ -1,13 +1,13 @@
-package net.ivica.reservations.business;
+package net.ivica.reservations;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan
-public class SpringBusinessConfig {
+@ComponentScan(basePackages = {"net.ivica.reservations.business", "net.ivica.reservations.security"})
+public class SpringMainConfig {
 
-    public SpringBusinessConfig() {
+    public SpringMainConfig() {
         super();
     }
 

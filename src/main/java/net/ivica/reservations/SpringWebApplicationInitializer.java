@@ -3,22 +3,18 @@ package net.ivica.reservations;
 import javax.servlet.Filter;
 
 import net.ivica.reservations.web.SpringWebConfig;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import net.ivica.reservations.business.SpringBusinessConfig;
-
-
+@Order(1)
 public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     public static final String CHARACTER_ENCODING = "UTF-8";
 
-
     public SpringWebApplicationInitializer() {
         super();
     }
-
-
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
@@ -27,7 +23,7 @@ public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDis
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] { SpringBusinessConfig.class };
+        return new Class<?>[] { SpringMainConfig.class };
     }
 
     @Override
