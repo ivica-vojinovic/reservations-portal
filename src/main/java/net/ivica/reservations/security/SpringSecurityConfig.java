@@ -25,9 +25,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/index.html")
             .and()
                 .authorizeRequests()
+                .antMatchers("/index.html").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/shared/**").hasAnyRole("USER","ADMIN")
             .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403.html");
@@ -39,8 +38,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .inMemoryAuthentication()
                 .withUser("ivica").password("demo").roles("ADMIN").and()
-                .withUser("uros").password("demo").roles("USER").and()
-                .withUser("vuk").password("demo").roles("USER","ADMIN");
+                .withUser("uros").password("demo").roles("USER").and();
     }
 
 }

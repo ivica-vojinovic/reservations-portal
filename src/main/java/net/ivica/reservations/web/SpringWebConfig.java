@@ -63,6 +63,7 @@ public class SpringWebConfig
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setDefaultEncoding("UTF-8");
         messageSource.setBasename("Messages");
         return messageSource;
     }
@@ -85,6 +86,7 @@ public class SpringWebConfig
         // Template cache is true by default. Set to false if you want
         // templates to be automatically updated when modified.
         templateResolver.setCacheable(true);
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
 
@@ -106,6 +108,7 @@ public class SpringWebConfig
     @Bean
     public ThymeleafViewResolver viewResolver(){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setCharacterEncoding("UTF-8");
         viewResolver.setTemplateEngine(templateEngine());
         return viewResolver;
     }

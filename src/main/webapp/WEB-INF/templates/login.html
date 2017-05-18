@@ -6,7 +6,6 @@
         <link rel="stylesheet" href="../../css/main.css" th:href="@{/css/main.css}" />
 	</head>
     <body>
-        <div id="test">TEST</div>
         <h1 th:text="#{login.page.name}">Login page</h1>
         <a th:href="@{/changeLanguage.html?userLanguage=sr&page=login}">
             <img src="../../images/sr-flag.png" th:src="@{/images/sr-flag.png}"/>
@@ -14,14 +13,13 @@
         <a th:href="@{/changeLanguage.html?userLanguage=en&page=login}">
             <img src="../../images/en-flag.png" th:src="@{/images/en-flag.png}"/>
         </a>
-        <p th:if="${loginError}" class="error">Wrong user or password</p>
+        <p th:if="${loginError}" class="error" th:text="#{login.page.loginError}">Wrong user or password</p>
         <form th:action="@{/login.html}" method="post">
-            <label for="username">Username</label>:
+            <label for="username" th:text="#{login.page.username}">Username</label>:
             <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-            <label for="password">Password</label>:
+            <label for="password" th:text="#{login.page.password}">Password</label>:
             <input type="password" id="password" name="password" /> <br />
-            <input type="submit" value="Log in" />
+            <input type="submit" value="Log in" th:value="#{login.page.loginButton}"/>
         </form>
-        <p><a href="../index.html" th:href="@{/index.html}">Back to home page</a></p>
     </body>
 </html>
