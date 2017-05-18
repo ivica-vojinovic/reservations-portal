@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Login page</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
+        <title th:text="#{application.title}">Laguna Portal</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../../css/main.css" th:href="@{/css/main.css}" />
 	</head>
     <body>
-        <h1>Login page</h1>
-        <p>Example administrator: jim / demo</p>
-        <p>Example user: bob / demo</p>
-        <p>Example user and administrator: ted / demo</p>
+        <div id="test">TEST</div>
+        <h1 th:text="#{login.page.name}">Login page</h1>
+        <a th:href="@{/changeLanguage.html?userLanguage=sr&page=login}">
+            <img src="../../images/sr-flag.png" th:src="@{/images/sr-flag.png}"/>
+        </a>
+        <a th:href="@{/changeLanguage.html?userLanguage=en&page=login}">
+            <img src="../../images/en-flag.png" th:src="@{/images/en-flag.png}"/>
+        </a>
         <p th:if="${loginError}" class="error">Wrong user or password</p>
         <form th:action="@{/login.html}" method="post">
             <label for="username">Username</label>:
