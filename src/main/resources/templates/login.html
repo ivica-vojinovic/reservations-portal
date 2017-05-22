@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{application.title}">Laguna Portal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1 th:text="#{login.page.name}">Login page</h1>
+<a th:href="@{/changeLanguage.html?userLanguage=sr&page=login}">
+    <img src="../static/sr-flag.png" th:src="@{sr-flag.png}"/>
+</a>
+<a th:href="@{/changeLanguage.html?userLanguage=en&page=login}">
+    <img src="../static/en-flag.png" th:src="@{en-flag.png}"/>
+</a>
+<p th:if="${loginError}" class="error" th:text="#{login.page.loginError}">Wrong user or password</p>
+<form th:action="@{/templates/login.html}" method="post">
+    <label for="username" th:text="#{login.page.username}">Username</label>:
+    <input type="text" id="username" name="username" autofocus="autofocus"/> <br/>
+    <label for="password" th:text="#{login.page.password}">Password</label>:
+    <input type="password" id="password" name="password"/> <br/>
+    <input type="submit" value="Log in" th:value="#{login.page.loginButton}"/>
+</form>
+</body>
+</html>
