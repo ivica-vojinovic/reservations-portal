@@ -13,7 +13,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String root(Locale locale) {
-        return "redirect:/index.html";
+        return "redirect:/index_backup.html";
     }
 
     @RequestMapping("/index.html")
