@@ -26,8 +26,28 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
         super();
     }
 
-    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setLanguageTagCompliant(true);
+        localeChangeInterceptor.setParamName("userLanguage");
+        return localeChangeInterceptor;
+    }
+
+    @Bean
+    public CookieLocaleResolver localeResolver() {
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setLanguageTagCompliant(true);
+        localeResolver.setCookieName("userLanguage");
+        Locale defaultLocale = new Locale("sr");
+        localeResolver.setDefaultLocale(defaultLocale);
+
+        return localeResolver;
     }
 
     @Bean
@@ -36,6 +56,18 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setBasename("Messages");
         return messageSource;
+    }
+
+    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
     }
 
     @Bean
@@ -51,43 +83,11 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     }
 
     @Bean
-    public SpringTemplateEngine templateEngine() {
-        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.setEnableSpringELCompiler(true);
-        return templateEngine;
-    }
-
-    @Bean
     public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setCharacterEncoding("UTF-8");
         viewResolver.setTemplateEngine(templateEngine());
         return viewResolver;
-    }
-
-    @Bean
-    public CookieLocaleResolver localeResolver() {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-        localeResolver.setLanguageTagCompliant(true);
-        localeResolver.setCookieName("userLanguage");
-        Locale defaultLocale = new Locale("sr");
-        localeResolver.setDefaultLocale(defaultLocale);
-
-        return localeResolver;
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setLanguageTagCompliant(true);
-        localeChangeInterceptor.setParamName("userLanguage");
-        return localeChangeInterceptor;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
     }
 
 }

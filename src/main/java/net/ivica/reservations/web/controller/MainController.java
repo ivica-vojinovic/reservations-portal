@@ -11,30 +11,9 @@ import java.util.Locale;
 @Controller
 public class MainController {
 
-    @RequestMapping("/")
-    public String root(Locale locale) {
-        return "redirect:/index_backup.html";
-    }
-
-    @RequestMapping("/index.html")
-    public String index() {
-        return "index";
-    }
-
     @RequestMapping("/admin/index.html")
     public String adminIndex() {
         return "admin/index";
-    }
-
-    @RequestMapping("/login.html")
-    public String login() {
-        return "login";
-    }
-
-    @RequestMapping("/login-error.html")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login";
     }
 
     @RequestMapping("/error.html")
@@ -55,6 +34,27 @@ public class MainController {
     @RequestMapping("/403.html")
     public String forbidden() {
         return "403";
+    }
+
+    @RequestMapping("/index.html")
+    public String index() {
+        return "index";
+    }
+
+    @RequestMapping("/login.html")
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping("/login-error.html")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login";
+    }
+
+    @RequestMapping("/")
+    public String root(Locale locale) {
+        return "redirect:/index_backup.html";
     }
 
 }

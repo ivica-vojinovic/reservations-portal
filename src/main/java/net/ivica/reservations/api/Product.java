@@ -17,15 +17,10 @@ public class Product implements Identifiable {
 
     private String _productDescription;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    public Long getProductId() {
+    @Transient
+    @Override
+    public Long getIdentifier() {
         return _productId;
-    }
-
-    public void setProductId(Long productId) {
-        _productId = productId;
     }
 
     @Column(name = "product_description", length = 255, nullable = false)
@@ -37,10 +32,15 @@ public class Product implements Identifiable {
         _productDescription = productDescription;
     }
 
-    @Transient
-    @Override
-    public Long getIdentifier() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
+    public Long getProductId() {
         return _productId;
+    }
+
+    public void setProductId(Long productId) {
+        _productId = productId;
     }
 
 }

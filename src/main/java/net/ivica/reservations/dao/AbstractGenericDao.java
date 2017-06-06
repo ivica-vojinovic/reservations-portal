@@ -8,14 +8,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import java.util.List;
-
-public abstract class AbstractGenericDao<T extends Identifiable, R extends AbstractSearchCommand> extends HibernateDaoSupport
-        implements GenericDao<T, R> {
+public abstract class AbstractGenericDao<T extends Identifiable, R extends AbstractSearchCommand>
+        extends HibernateDaoSupport implements GenericDao<T, R> {
 
     private Class<T> _entityPersistanceClass;
-    @Autowired
-    private SessionFactory _sessionFactory;
 
     public AbstractGenericDao(Class<T> entityPersistenceClass) {
         _entityPersistanceClass = entityPersistenceClass;
@@ -26,9 +22,9 @@ public abstract class AbstractGenericDao<T extends Identifiable, R extends Abstr
         getCurrentSession().clear();
     }
 
-    @Override
-    public void delete(T entity) {
-        getCurrentSession().delete(entity);
+    @Autowired
+    public void configureSessionFactory(SessionFactory sessionFactory) {
+        setSessionFactory(sessionFactory);
     }
 
 //    @Override
@@ -36,17 +32,9 @@ public abstract class AbstractGenericDao<T extends Identifiable, R extends Abstr
 //	return listByCriteria(null, (Criterion[]) null);
 //    }
 
-    @SuppressWarnings("hiding")
-    public final <T> T execute(HibernateExecuteCallback<T> callback) {
-        Session session = getCurrentSession();
-
-        return callback.executeInHibernate(session);
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    public T findById(Long id) {
-        return (T) getCurrentSession().get(getEntityPersistanceClass(), id);
+    public void delete(T entity) {
+        getCurrentSession().delete(entity);
     }
 
 //    @Override
@@ -64,15 +52,15 @@ public abstract class AbstractGenericDao<T extends Identifiable, R extends Abstr
 //	return query.singleResult(getCurrentSession());
 //    }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void flushSession() {
-        getCurrentSession().flush();
+    public T findById(Long id) {
+        return (T) getCurrentSession().get(getEntityPersistanceClass(), id);
     }
 
     @Override
-    public Long save(T entity) {
-        return (Long) getCurrentSession().save(entity);
-
+    public void flushSession() {
+        getCurrentSession().flush();
     }
 
 //    @SuppressWarnings("unchecked")
@@ -100,26 +88,6 @@ public abstract class AbstractGenericDao<T extends Identifiable, R extends Abstr
 //	});
 //    }
 
-    @Override
-    public void saveOrUpdate(T entity) {
-        getCurrentSession().saveOrUpdate(entity);
-    }
-
-    private SessionFactory getSessionFactoryInternal() {
-        return _sessionFactory;
-    }
-
-
-    @Autowired
-    public void configureSessionFactory() {
-        setSessionFactory(getSessionFactoryInternal());
-    }
-
-    @Override
-    public void update(T entity) {
-        getCurrentSession().update(entity);
-    }
-
     private Session getCurrentSession() {
         return getSessionFactory().getCurrentSession();
     }
@@ -128,10 +96,20 @@ public abstract class AbstractGenericDao<T extends Identifiable, R extends Abstr
         return _entityPersistanceClass;
     }
 
-    protected abstract void afterLoadingEntites(List<T> elements, R command);
+    @Override
+    public Long save(T entity) {
+        return (Long) getCurrentSession().save(entity);
 
-    public interface HibernateExecuteCallback<T> {
-        T executeInHibernate(Session session);
+    }
+
+    @Override
+    public void saveOrUpdate(T entity) {
+        getCurrentSession().saveOrUpdate(entity);
+    }
+
+    @Override
+    public void update(T entity) {
+        getCurrentSession().update(entity);
     }
 
 }

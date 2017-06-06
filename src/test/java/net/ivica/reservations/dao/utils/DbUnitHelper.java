@@ -70,6 +70,20 @@ public class DbUnitHelper {
         }
     }
 
+    private IDataSet createDataSetFromFile(File dataSetFile) {
+        IDataSet expectedDataSet;
+
+        try (InputStream expectedDataSetStream = new FileInputStream(dataSetFile)) {
+            FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
+            builder.setColumnSensing(true);
+            expectedDataSet = builder.build(expectedDataSetStream);
+        } catch (DataSetException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return expectedDataSet;
+    }
+
     public IDataSet createSnapshot() {
         IDatabaseConnection conn = getDatabaseConnection();
 
@@ -229,6 +243,10 @@ public class DbUnitHelper {
         }
     }
 
+    public DataSource getDataSource() {
+        return _dataSource;
+    }
+
     public IDatabaseConnection getDatabaseConnection() {
         Connection jdbcConnection;
         try {
@@ -245,10 +263,6 @@ public class DbUnitHelper {
         }
 
         return connection;
-    }
-
-    public DataSource getDataSource() {
-        return _dataSource;
     }
 
     public int getRowCountInDatabaseTable(String tableName) {
@@ -307,20 +321,6 @@ public class DbUnitHelper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private IDataSet createDataSetFromFile(File dataSetFile) {
-        IDataSet expectedDataSet;
-
-        try (InputStream expectedDataSetStream = new FileInputStream(dataSetFile)) {
-            FlatXmlDataSetBuilder builder = new FlatXmlDataSetBuilder();
-            builder.setColumnSensing(true);
-            expectedDataSet = builder.build(expectedDataSetStream);
-        } catch (DataSetException | IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return expectedDataSet;
     }
 
 }

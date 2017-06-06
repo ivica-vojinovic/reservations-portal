@@ -5,6 +5,7 @@ import net.ivica.reservations.api.command.AbstractSearchCommand;
 
 // TODO vidi kako iskomentarisane metode da resis. Moze named query-jem.
 public interface GenericDao<T extends Identifiable, R extends AbstractSearchCommand> {
+
     void clearSession();
 
     void delete(T entity);
@@ -28,4 +29,5 @@ public interface GenericDao<T extends Identifiable, R extends AbstractSearchComm
 //    PagedListHolder<T> search(R command);
 
     void update(T entity);
+
 }
