@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Sql("/scripts/reset-db.sql")
 public class Tests {
 
     @Autowired
     private ProductService _productService;
 
     @Test
-    @Sql("/scripts/create-db.sql")
     public void testExample() {
         Product product = new Product();
         product.setProductDescription("Description");
