@@ -4,6 +4,7 @@ import net.ivica.reservations.api.Product;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.mariadb.jdbc.MariaDbDataSource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -14,20 +15,21 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 @Configuration
+@ConfigurationProperties("portal")
 public class SpringDaoConfig {
 
-    public static final String DB_URL = "jdbc:mariadb://localhost:3306/portal?useUnicode=true&amp;characterEncoding=UTF8";
-    public static final String DB_USER = "portal";
-    public static final String DB_PASSWORD = "portal";
+    private String _dbUrl;
+    private String _dbUser;
+    private String _dbPassword;
 
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDB53Dialect");
         properties.setProperty("hibernate.connection.driver_class", "org.mariadb.jdbc.Driver");
-        properties.setProperty("hibernate.connection.url", DB_USER);
-        properties.setProperty("hibernate.connection.username", DB_USER);
-        properties.setProperty("hibernate.connection.password", DB_PASSWORD);
+        properties.setProperty("hibernate.connection.url", getDbUrl());
+        properties.setProperty("hibernate.connection.username", getDbUser());
+        properties.setProperty("hibernate.connection.password", getDbPassword());
         properties.setProperty("hibernate.current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
 
         DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
@@ -43,14 +45,38 @@ public class SpringDaoConfig {
         MariaDbDataSource dataSource = null;
         try {
             dataSource = new MariaDbDataSource();
-            dataSource.setUrl(DB_URL);
-            dataSource.setUser(DB_USER);
-            dataSource.setPassword(DB_PASSWORD);
+            dataSource.setUrl(getDbUrl());
+            dataSource.setUser(getDbUser());
+            dataSource.setPassword(getDbPassword());
         } catch (SQLException e) {
             throw new RuntimeException("Problem with creating MariaDB data source.", e);
         }
 
         return dataSource;
+    }
+
+    public String getDbPassword() {
+        return _dbPassword;
+    }
+
+    public void setDbPassword(String dbPassword) {
+        _dbPassword = dbPassword;
+    }
+
+    public String getDbUrl() {
+        return _dbUrl;
+    }
+
+    public void setDbUrl(String dbUrl) {
+        _dbUrl = dbUrl;
+    }
+
+    public String getDbUser() {
+        return _dbUser;
+    }
+
+    public void setDbUser(String dbUser) {
+        _dbUser = dbUser;
     }
 
     @Bean
