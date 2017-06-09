@@ -22,15 +22,32 @@ public class SpringDaoConfig {
     private String _dbUser;
     private String _dbPassword;
 
+    private String _hibernateAuto;
+    private String _hibernateImportFiles;
+
+    public String getHibernateImportFiles() {
+        return _hibernateImportFiles;
+    }
+
+    public void setHibernateImportFiles(String hibernateImportFiles) {
+        _hibernateImportFiles = hibernateImportFiles;
+    }
+
+    private String _hibernateDialect;
+    private String _hibernateDriver;
+    private String _hibernateContextClass;
+
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDB53Dialect");
-        properties.setProperty("hibernate.connection.driver_class", "org.mariadb.jdbc.Driver");
+        properties.setProperty("hibernate.dialect", getHibernateDialect());
+        properties.setProperty("hibernate.connection.driver_class", getHibernateDialect());
         properties.setProperty("hibernate.connection.url", getDbUrl());
         properties.setProperty("hibernate.connection.username", getDbUser());
         properties.setProperty("hibernate.connection.password", getDbPassword());
-        properties.setProperty("hibernate.current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
+        properties.setProperty("hibernate.current_session_context_class", getHibernateContextClass());
+        properties.setProperty("hibernate.hbm2ddl.auto", getHibernateAuto());
+        properties.setProperty("hibernate.hbm2ddl.import_files", getHibernateImportFiles());
+        properties.setProperty("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
 
         DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
         connectionProvider.setDataSource(dataSource());
@@ -77,6 +94,38 @@ public class SpringDaoConfig {
 
     public void setDbUser(String dbUser) {
         _dbUser = dbUser;
+    }
+
+    public String getHibernateAuto() {
+        return _hibernateAuto;
+    }
+
+    public void setHibernateAuto(String hibernateAuto) {
+        _hibernateAuto = hibernateAuto;
+    }
+
+    public String getHibernateContextClass() {
+        return _hibernateContextClass;
+    }
+
+    public void setHibernateContextClass(String hibernateContextClass) {
+        _hibernateContextClass = hibernateContextClass;
+    }
+
+    public String getHibernateDialect() {
+        return _hibernateDialect;
+    }
+
+    public void setHibernateDialect(String hibernateDialect) {
+        _hibernateDialect = hibernateDialect;
+    }
+
+    public String getHibernateDriver() {
+        return _hibernateDriver;
+    }
+
+    public void setHibernateDriver(String hibernateDriver) {
+        _hibernateDriver = hibernateDriver;
     }
 
     @Bean

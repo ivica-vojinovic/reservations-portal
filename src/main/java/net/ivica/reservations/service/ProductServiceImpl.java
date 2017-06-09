@@ -1,7 +1,6 @@
 package net.ivica.reservations.service;
 
 import net.ivica.reservations.api.Product;
-import net.ivica.reservations.api.command.ProductSearchCommand;
 import net.ivica.reservations.api.dao.GenericDao;
 import net.ivica.reservations.api.dao.ProductDao;
 import net.ivica.reservations.api.service.ProductService;
@@ -9,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("productService")
-public class ProductServiceImpl extends AbstractGenericService<Product, ProductSearchCommand> implements ProductService {
+public class ProductServiceImpl extends AbstractGenericService<Product> implements ProductService {
 
     @Autowired
     private ProductDao _productDao;
 
     @Override
-    protected GenericDao<Product, ProductSearchCommand> getEntityDao() {
+    public Product findProductByName(String productName) {
+        return getProductDao().findProductByName(productName);
+    }
+
+    @Override
+    protected GenericDao<Product> getEntityDao() {
         return _productDao;
     }
 
