@@ -36,11 +36,6 @@ public class MainController {
         return "403";
     }
 
-    @RequestMapping("/index.html")
-    public String index() {
-        return "index";
-    }
-
     @RequestMapping("/login.html")
     public String login() {
         return "login";
@@ -50,11 +45,6 @@ public class MainController {
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";
-    }
-
-    @RequestMapping("/")
-    public String root(Locale locale) {
-        return "redirect:/index_backup.html";
     }
 
 }

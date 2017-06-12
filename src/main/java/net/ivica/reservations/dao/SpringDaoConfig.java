@@ -46,8 +46,12 @@ public class SpringDaoConfig {
         properties.setProperty("hibernate.connection.password", getDbPassword());
         properties.setProperty("hibernate.current_session_context_class", getHibernateContextClass());
         properties.setProperty("hibernate.hbm2ddl.auto", getHibernateAuto());
-        properties.setProperty("hibernate.hbm2ddl.import_files", getHibernateImportFiles());
-        properties.setProperty("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
+
+        // This is null when in production sine hbm2dll.auto is set to validate.
+        if(getHibernateImportFiles() != null) {
+            properties.setProperty("hibernate.hbm2ddl.import_files", getHibernateImportFiles());
+            properties.setProperty("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
+        }
 
         DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
         connectionProvider.setDataSource(dataSource());
