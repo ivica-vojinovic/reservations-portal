@@ -1,11 +1,11 @@
 package net.ivica.reservations.web;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
+import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import net.ivica.reservations.AbstractTests;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,10 @@ public class IndexTests extends AbstractTests {
     public void indexTest() throws Exception {
         HtmlPage indexPage = getWebClient().getPage("http://localhost:8080/index.html");
 
-        System.out.println(indexPage.asXml());
+        HtmlElement productNameElement = indexPage.getHtmlElementById("p-name-1");
+        Assert.assertEquals("Test product", productNameElement.getTextContent());
+        HtmlElement productDescriptionElement = indexPage.getHtmlElementById("p-description-1");
+        Assert.assertEquals("Test description", productDescriptionElement.getTextContent());
     }
 
     @Before
