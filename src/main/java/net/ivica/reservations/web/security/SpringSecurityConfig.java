@@ -16,7 +16,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        http.formLogin().loginPage("/login.html").failureUrl("/login-error.html").and().logout()
+        http.formLogin().loginPage("/index.html").failureUrl("/login-error.html").and().logout().logoutUrl("/logout.html")
                 .logoutSuccessUrl("/index.html").and().authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN").and().exceptionHandling().accessDeniedPage("/403.html");
 

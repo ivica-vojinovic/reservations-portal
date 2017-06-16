@@ -34,8 +34,13 @@
         <h1>Laguna Portal</h1>
         <p>Be Beatuful</p>
     </div>
+
+    <!-- Display login or signup errors -->
+    <div th:if="${loginError}" class="alert alert-danger col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">Login error.</div>
+    <br th:if="${loginError}">
 </div>
 
+<!--/*@thymesVar id="authUser" type="org.springframework.security.core.userdetails.User"*/-->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -53,9 +58,11 @@
                 <li><a href="#">Administration</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#login-modal"><span
+                <li th:if="${authUser != null}"><a th:text="${'Hi, ' + authUser.getUsername()}" href="#"><span class="glyphicon glyphicon-user"></span> Hi, User</a></li>
+                <li th:if="${authUser == null}"><a href="#" data-toggle="modal" data-target="#login-modal"><span
                         class="glyphicon glyphicon-log-in"></span> Log In</a></li>
+                <li th:if="${authUser != null}"><a href="/logout.html"><span
+                        class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
             </ul>
         </div>
     </div>
@@ -74,7 +81,7 @@
             <div style="padding-top:30px" class="panel-body">
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                <form id="loginform" class="form-horizontal" role="form">
+                <form id="loginform" th:action="@{/index.html}" method="post" class="form-horizontal" role="form">
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="login-username" type="text" class="form-control" name="username" value=""
@@ -96,8 +103,8 @@
 
                     <div style="margin-top:10px" class="form-group">
                         <div class="col-sm-12 controls">
-                            <a id="btn-login" href="#" class="btn btn-success">Login </a>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Login </button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel </button>
                         </div>
                     </div>
 

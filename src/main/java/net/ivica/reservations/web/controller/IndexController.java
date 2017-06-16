@@ -3,6 +3,10 @@ package net.ivica.reservations.web.controller;
 import net.ivica.reservations.api.Product;
 import net.ivica.reservations.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Controller
 public class IndexController {
@@ -24,6 +27,17 @@ public class IndexController {
 
     @RequestMapping("/index.html")
     public String index(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAnonymous = authentication instanceof AnonymousAuthenticationToken;
+
+        if (!isAnonymous) {
+            User authUser = (User) authentication.getPrincipal();
+
+            model.addAttribute("authUser", authUser);
+        }
+
+
         List<Product> productList = getProductService().findAll();
 
         List<List<Product>> modelList = new LinkedList<>();
@@ -33,7 +47,7 @@ public class IndexController {
             modelRowList.add(product);
             counter++;
 
-            if(counter >= 2) {
+            if (counter >= 2) {
                 counter = 0;
 
                 modelList.add(modelRowList);
