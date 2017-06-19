@@ -1,6 +1,7 @@
 package net.ivica.reservations.dao;
 
 import net.ivica.reservations.api.Product;
+import net.ivica.reservations.api.UserProfile;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.mariadb.jdbc.MariaDbDataSource;
@@ -135,7 +136,7 @@ public class SpringDaoConfig {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder sessionFactoryBuilder = new LocalSessionFactoryBuilder(dataSource());
-        sessionFactoryBuilder.addAnnotatedClass(Product.class);
+        sessionFactoryBuilder.addAnnotatedClasses(Product.class, UserProfile.class);
         sessionFactoryBuilder.setProperties(additionalProperties());
 
         return sessionFactoryBuilder.buildSessionFactory();

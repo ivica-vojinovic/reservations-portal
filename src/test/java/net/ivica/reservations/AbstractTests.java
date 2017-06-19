@@ -13,11 +13,4 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("tests")
 public abstract class AbstractTests {
 
-    @Autowired
-    private ProductService _productService;
-
-    protected ProductService getProductService() {
-        return _productService;
-    }
-
 }

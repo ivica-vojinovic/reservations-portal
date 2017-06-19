@@ -2,12 +2,17 @@ package net.ivica.reservations.service;
 
 import net.ivica.reservations.AbstractTests;
 import net.ivica.reservations.api.Product;
+import net.ivica.reservations.api.service.ProductService;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class ProductServiceTests extends AbstractTests {
+
+    @Autowired
+    private ProductService _productService;
 
     @Test
     public void findAll() throws Exception {
@@ -31,6 +36,10 @@ public class ProductServiceTests extends AbstractTests {
         Assert.assertNull(productByName);
     }
 
+    protected ProductService getProductService() {
+        return _productService;
+    }
+
     @Test
     public void save() {
         Product product = new Product();
@@ -45,4 +54,5 @@ public class ProductServiceTests extends AbstractTests {
         Assert.assertEquals(productDescription, savedProduct.getProductDescription());
         Assert.assertEquals(productDescription, savedProduct.getProductName());
     }
+
 }
