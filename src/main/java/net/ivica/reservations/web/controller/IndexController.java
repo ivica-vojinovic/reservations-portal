@@ -18,18 +18,22 @@ import java.util.Locale;
 @Controller
 public class IndexController {
 
-    @Autowired
     private ProductService _productService;
 
     private ProductService getProductService() {
         return _productService;
     }
 
+    @Autowired
+    public void setProductService(ProductService productService) {
+        _productService = productService;
+    }
+
     @RequestMapping("/index.html")
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        boolean isAnonymous = authentication instanceof AnonymousAuthenticationToken;
+        boolean isAnonymous = (authentication == null || authentication instanceof AnonymousAuthenticationToken);
 
         if (!isAnonymous) {
             User authUser = (User) authentication.getPrincipal();

@@ -36,8 +36,8 @@
     </div>
 
     <!-- Display login or signup errors -->
-    <div th:if="${loginError}" class="alert alert-danger col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">Login error.</div>
-    <br th:if="${loginError}">
+    <div id="login-error" th:if="${loginError != null}" th:text="${loginError}" class="alert alert-danger col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">Login error.</div>
+    <br th:if="${loginError != null}">
 </div>
 
 <!--/*@thymesVar id="authUser" type="org.springframework.security.core.userdetails.User"*/-->
@@ -59,7 +59,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${authUser != null}"><a th:text="${'Hi, ' + authUser.getUsername()}" href="#"><span class="glyphicon glyphicon-user"></span> Hi, User</a></li>
-                <li th:if="${authUser == null}"><a href="#" data-toggle="modal" data-target="#login-modal"><span
+                <li th:if="${authUser == null}"><a name="login-modal-link" href="#" data-toggle="modal" data-target="#login-modal"><span
                         class="glyphicon glyphicon-log-in"></span> Log In</a></li>
                 <li th:if="${authUser != null}"><a href="/logout.html"><span
                         class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
@@ -69,7 +69,7 @@
 </nav>
 
 <div id="login-modal" class="modal fade" role="dialog">
-    <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+    <div id="login-box" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Sign In</div>
@@ -81,7 +81,7 @@
             <div style="padding-top:30px" class="panel-body">
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                <form id="loginform" th:action="@{/index.html}" method="post" class="form-horizontal" role="form">
+                <form id="login-form" th:action="@{/index.html}" method="post" class="form-horizontal" role="form">
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="login-username" type="text" class="form-control" name="username" value=""
@@ -103,7 +103,7 @@
 
                     <div style="margin-top:10px" class="form-group">
                         <div class="col-sm-12 controls">
-                            <button type="submit" class="btn btn-success">Login </button>
+                            <button name="login-button" type="submit" class="btn btn-success">Login </button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel </button>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
             </div>
         </div>
     </div>
-    <div id="signupbox" style="display:none;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+    <div id="signup-box" style="display:none;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Sign Up</div>
@@ -131,7 +131,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form id="signupform" class="form-horizontal" role="form">
+                <form id="signup-form" class="form-horizontal" role="form">
                     <div id="signupalert" style="display:none" class="alert alert-danger">
                         <p>Error:</p>
                         <span></span>

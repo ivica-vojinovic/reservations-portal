@@ -1,13 +1,22 @@
 package net.ivica.reservations.api;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+@NamedQueries(value = {@NamedQuery(name = "user_profile_find_by_email", query = "select u from UserProfile u where u.email = :email")})
 @Entity
 @BatchSize(size = 100)
 @Table(name = "user_profile")
-public class UserProfile implements Identifiable {
+public class UserProfile implements Identifiable, UserDetails {
 
     private Long _userProfileId;
 
@@ -21,6 +30,17 @@ public class UserProfile implements Identifiable {
     private String _lastName;
 
     private String _phoneNumber;
+
+    private String _role;
+
+    @Transient
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(getRole()));
+
+        return grantedAuthorities;
+    }
 
     @Column(name = "email", nullable = false, length = 25, unique = true)
     public String getEmail() {
@@ -73,6 +93,15 @@ public class UserProfile implements Identifiable {
         _phoneNumber = phoneNumber;
     }
 
+    public String getRole() {
+        return _role;
+    }
+
+    @Column(name = "role", nullable = false, length = 15)
+    public void setRole(String role) {
+        _role = role;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_profile_id")
@@ -82,6 +111,36 @@ public class UserProfile implements Identifiable {
 
     public void setUserProfileId(Long userProfileId) {
         _userProfileId = userProfileId;
+    }
+
+    @Transient
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Transient
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Transient
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
 }

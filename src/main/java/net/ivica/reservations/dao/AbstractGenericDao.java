@@ -1,12 +1,15 @@
 package net.ivica.reservations.dao;
 
 import net.ivica.reservations.api.Identifiable;
+import net.ivica.reservations.api.ParameterTuple;
+import net.ivica.reservations.api.Product;
 import net.ivica.reservations.api.dao.GenericDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractGenericDao<T extends Identifiable>
@@ -71,6 +74,24 @@ public abstract class AbstractGenericDao<T extends Identifiable>
     @Override
     public void update(T entity) {
         getCurrentSession().update(entity);
+    }
+
+    @Override
+    public T findSingleResult(String queryName, ParameterTuple... parameters) {
+        String[] parameterKeys = new String[parameters.length];
+        String[] parameterValues = new String[parameters.length];
+        for(int index = 0; index < parameters.length; index++) {
+            parameterKeys[index] = parameters[index].getKey();
+            parameterValues[index] = parameters[index].getValue();
+        }
+
+        List<T> result = (List<T>) getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, parameterKeys, parameterValues);
+
+        if (result.isEmpty()) {
+            return null;
+        }
+
+        return result.get(0);
     }
 
 }

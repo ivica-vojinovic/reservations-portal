@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ProductServiceTests extends AbstractTests {
 
-    @Autowired
     private ProductService _productService;
 
     @Test
@@ -38,6 +37,11 @@ public class ProductServiceTests extends AbstractTests {
 
     protected ProductService getProductService() {
         return _productService;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        _productService = productService;
     }
 
     @Test

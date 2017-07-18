@@ -8,8 +8,7 @@ import javax.persistence.*;
 import javax.persistence.metamodel.SingularAttribute;
 
 @NamedQueries({
-        @NamedQuery(name = "find_product_by_name", query = "select p from Product p where p.productName like :productName"),
-        @NamedQuery(name = "find_all_products", query = "select p from Product p")})
+        @NamedQuery(name = "product_find_by_name", query = "select p from Product p where p.productName like :productName")})
 @Entity
 @BatchSize(size = 100)
 @Table(name = "product")

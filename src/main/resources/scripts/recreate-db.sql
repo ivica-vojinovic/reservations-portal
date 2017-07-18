@@ -18,8 +18,11 @@ CREATE TABLE `user_profile` (
   `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `role` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
   `phone_number` varchar(25) COLLATE utf8_unicode_ci,
   PRIMARY KEY (`user_profile_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `user_profile` (user_profile_id, email, first_name, last_name, password, role) VALUES ('1', 'admin@gmail.com', 'Admin', 'Admin', '$2a$06$kEcAZMqeT4gAglOBV99ucuIk.XkNcw81V6Wft6F8R81j9SkT6GnFK', 'ROLE_ADMIN');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,10 +1,9 @@
 package net.ivica.reservations.dao;
 
+import net.ivica.reservations.api.ParameterTuple;
 import net.ivica.reservations.api.Product;
 import net.ivica.reservations.api.dao.ProductDao;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository("productDao")
 public class ProductDaoImpl extends AbstractGenericDao<Product> implements ProductDao {
@@ -15,12 +14,7 @@ public class ProductDaoImpl extends AbstractGenericDao<Product> implements Produ
 
     @Override
     public Product findProductByName(String productName) {
-        List<Product> products = (List<Product>) getHibernateTemplate().findByNamedQueryAndNamedParam("find_product_by_name", "productName", productName);
-
-        if (products.isEmpty()) {
-            return null;
-        }
-
-        return products.get(0);
+        return findSingleResult("product_find_by_name", new ParameterTuple("productName", productName));
     }
+
 }

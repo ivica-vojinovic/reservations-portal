@@ -1,9 +1,7 @@
 package net.ivica.reservations.service;
 
 import net.ivica.reservations.AbstractTests;
-import net.ivica.reservations.api.Product;
 import net.ivica.reservations.api.UserProfile;
-import net.ivica.reservations.api.service.ProductService;
 import net.ivica.reservations.api.service.UserProfileService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,12 +11,7 @@ import java.util.List;
 
 public class UserProfileServiceTests extends AbstractTests {
 
-    @Autowired
     private UserProfileService _userProfileService;
-
-    public UserProfileService getUserProfileService() {
-        return _userProfileService;
-    }
 
     @Test
     public void findAll() throws Exception {
@@ -41,6 +34,14 @@ public class UserProfileServiceTests extends AbstractTests {
 //        Assert.assertNull(productByName);
     }
 
+    public UserProfileService getUserProfileService() {
+        return _userProfileService;
+    }
+
+    @Autowired
+    public void setUserProfileService(UserProfileService userProfileService) {
+        _userProfileService = userProfileService;
+    }
 
     @Test
     public void save() {

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service("productService")
 public class ProductServiceImpl extends AbstractGenericService<Product> implements ProductService {
 
-    @Autowired
     private ProductDao _productDao;
 
     @Override
@@ -25,6 +24,11 @@ public class ProductServiceImpl extends AbstractGenericService<Product> implemen
 
     private ProductDao getProductDao() {
         return _productDao;
+    }
+
+    @Autowired
+    public void setProductDao(ProductDao productDao) {
+        _productDao = productDao;
     }
 
 }
