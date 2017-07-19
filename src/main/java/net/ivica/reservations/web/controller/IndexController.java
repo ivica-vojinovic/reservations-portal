@@ -1,6 +1,7 @@
 package net.ivica.reservations.web.controller;
 
 import net.ivica.reservations.api.Product;
+import net.ivica.reservations.api.UserProfile;
 import net.ivica.reservations.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -36,7 +37,7 @@ public class IndexController {
         boolean isAnonymous = (authentication == null || authentication instanceof AnonymousAuthenticationToken);
 
         if (!isAnonymous) {
-            User authUser = (User) authentication.getPrincipal();
+            UserProfile authUser = (UserProfile) authentication.getPrincipal();
 
             model.addAttribute("authUser", authUser);
         }

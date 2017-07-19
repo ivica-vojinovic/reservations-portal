@@ -22,18 +22,8 @@ public class SpringDaoConfig {
     private String _dbUrl;
     private String _dbUser;
     private String _dbPassword;
-
     private String _hibernateAuto;
     private String _hibernateImportFiles;
-
-    public String getHibernateImportFiles() {
-        return _hibernateImportFiles;
-    }
-
-    public void setHibernateImportFiles(String hibernateImportFiles) {
-        _hibernateImportFiles = hibernateImportFiles;
-    }
-
     private String _hibernateDialect;
     private String _hibernateDriver;
     private String _hibernateContextClass;
@@ -49,7 +39,7 @@ public class SpringDaoConfig {
         properties.setProperty("hibernate.hbm2ddl.auto", getHibernateAuto());
 
         // This is null when in production sine hbm2dll.auto is set to validate.
-        if(getHibernateImportFiles() != null) {
+        if (getHibernateImportFiles() != null) {
             properties.setProperty("hibernate.hbm2ddl.import_files", getHibernateImportFiles());
             properties.setProperty("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
         }
@@ -131,6 +121,14 @@ public class SpringDaoConfig {
 
     public void setHibernateDriver(String hibernateDriver) {
         _hibernateDriver = hibernateDriver;
+    }
+
+    public String getHibernateImportFiles() {
+        return _hibernateImportFiles;
+    }
+
+    public void setHibernateImportFiles(String hibernateImportFiles) {
+        _hibernateImportFiles = hibernateImportFiles;
     }
 
     @Bean

@@ -14,19 +14,34 @@ import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-public class IndexTests extends AbstractTests {
+public class IndexTests extends AbstractHtmlTests {
 
-    private WebApplicationContext _context;
+    @Test
+    public void loginTest() throws Exception {
+        HtmlPage indexPage = getWebClient().getPage("http://localhost:8080/index.html");
 
-    private MockMvc _mockMvc;
+        HtmlAnchor loginModalLink = indexPage.getAnchorByName("login-modal-link");
+        indexPage = loginModalLink.click();
 
-    private FilterChainProxy _filterChainProxy;
+        HtmlForm loginForm = indexPage.getHtmlElementById("login-form");
+        waitForDisplayed(loginForm);
 
-    private WebClient _webClient;
+        HtmlInput usernameInput = loginForm.getInputByName("username");
+        Assert.assertTrue(usernameInput.isDisplayed());
+        usernameInput.setValueAttribute("ivica@gmail.com");
 
-    @After
-    public void cleanup() {
-        getWebClient().close();
+        HtmlInput passwordInput = loginForm.getInputByName("password");
+        Assert.assertTrue(passwordInput.isDisplayed());
+        passwordInput.setValueAttribute("password");
+
+        HtmlButton loginButton = loginForm.getButtonByName("login-button");
+        Assert.assertTrue(loginButton.isDisplayed());
+        HtmlPage resultPage = loginButton.click();
+
+        waitForBackgroundJavaScript();
+
+        HtmlElement authUserNameElement = resultPage.getHtmlElementById("auth-username");
+        Assert.assertEquals("Hi, Ivica", authUserNameElement.getTextContent());
     }
 
     @Test
@@ -51,14 +66,10 @@ public class IndexTests extends AbstractTests {
         Assert.assertTrue(loginButton.isDisplayed());
         HtmlPage resultPage = loginButton.click();
 
-        _webClient.waitForBackgroundJavaScript(2000);
+        waitForBackgroundJavaScript();
 
         HtmlElement divErrorElement = resultPage.getHtmlElementById("login-error");
         Assert.assertEquals("Bad credentials", divErrorElement.getTextContent());
-    }
-
-    private WebClient getWebClient() {
-        return _webClient;
     }
 
     @Test
@@ -69,25 +80,6 @@ public class IndexTests extends AbstractTests {
         Assert.assertEquals("Test product", productNameElement.getTextContent());
         HtmlElement productDescriptionElement = indexPage.getHtmlElementById("p-description-1");
         Assert.assertEquals("Test description", productDescriptionElement.getTextContent());
-    }
-
-    @Autowired
-    public void setContext(WebApplicationContext context) {
-        _context = context;
-    }
-
-    @Autowired
-    public void setFilterChainProxy(FilterChainProxy filterChainProxy) {
-        _filterChainProxy = filterChainProxy;
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        _mockMvc = MockMvcBuilders
-                .webAppContextSetup(_context).addFilters(_filterChainProxy)
-                .build();
-
-        _webClient = MockMvcWebClientBuilder.mockMvcSetup(_mockMvc).build();
     }
 
 }

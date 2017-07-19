@@ -36,11 +36,12 @@
     </div>
 
     <!-- Display login or signup errors -->
+    <!--/*@thymesVar id="loginError" type="java.lang.String"*/-->
     <div id="login-error" th:if="${loginError != null}" th:text="${loginError}" class="alert alert-danger col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">Login error.</div>
     <br th:if="${loginError != null}">
 </div>
 
-<!--/*@thymesVar id="authUser" type="org.springframework.security.core.userdetails.User"*/-->
+<!--/*@thymesVar id="authUser" type="net.ivica.reservations.api.UserProfile"*/-->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -58,7 +59,7 @@
                 <li><a href="#">Administration</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${authUser != null}"><a th:text="${'Hi, ' + authUser.getUsername()}" href="#"><span class="glyphicon glyphicon-user"></span> Hi, User</a></li>
+                <li id="auth-username" th:if="${authUser != null}"><a th:text="${'Hi, ' + authUser.getFirstName()}" href="#"><span class="glyphicon glyphicon-user"></span> Hi, User</a></li>
                 <li th:if="${authUser == null}"><a name="login-modal-link" href="#" data-toggle="modal" data-target="#login-modal"><span
                         class="glyphicon glyphicon-log-in"></span> Log In</a></li>
                 <li th:if="${authUser != null}"><a href="/logout.html"><span
@@ -84,7 +85,7 @@
                 <form id="login-form" th:action="@{/index.html}" method="post" class="form-horizontal" role="form">
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="login-username" type="text" class="form-control" name="username" value=""
+                        <input id="login-username" type="text" class="form-control" name="username"
                                placeholder="username">
                     </div>
 
