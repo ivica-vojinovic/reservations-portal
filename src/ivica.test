@@ -1,0 +1,199 @@
+https://master.env.api.shop1.rocks/api/rest/v1/voucher-orders/4efe4d2f-169a-4bac-a477-3c6e20cbc5d9
+
+<span class="MuiButton-label jss30">Dárkové karty</span>
+
+<span class="MuiButton-label jss30">Gry i rozrywka</span>
+
+<span class="MuiButton-label jss56">Doładowania</span>
+
+DCP v6.6 release.
+
+Update dependencies for v6.6 release
+
+
+1 payment - 900 threads
+Longest execution 40851
+
+3 payment - 900 threds
+Longest execution 22931
+
+1 payment - 900 threads - no confirms
+Longest execution 40335
+
+1 payment - 900 threads - no confirms - transient messages
+Longest execution 42929
+
+1 payment - 1000 threads / 10 messages
+Total messages 10000, longest execution 36943
+
+1 payment - 1000 threads / 10 messages / caching connections
+Total messages 10000, longest execution 36943
+
+1 payment - 1000 threads / 10 messages / pooled data source
+Total messages 10000, longest execution 73204
+
+3 payment - 1000 threads / 10 messages / sa edge i payment zajedno
+edge -    Total messages 10000, longest execution 51371
+payment - Total messages 10000, longest execution 54140
+
+3 payment - 1000 threads / 10 messages / 10 concurrency sa edge i payment zajedno
+edge -    Total messages 9945, longest execution 40411
+payment - Total messages 9928, longest execution 50141
+
+6 payment - 1000 threads / 10 messages / 10 concurrency sa edge i payment zajedno
+edge -    Total messages 9971, longest execution 46329
+payment - Total messages 9964, longest execution 43683
+
+3 payment - 1000 threads / 10 messages / 1000 cached channels
+Total messages 9931, longest execution 18756
+
+3 payment - 2000 threads / 10 messages / 1000 cached channels
+Total messages 20000, errors 17, longest execution 60073
+
+===
+Djole - Git operacije
+
+ovo je klasa koja radi sa git-om
+src/main/java/com/openpuzzles/op/service/folder/strategies/GitOperations.java
+
+kontroler za dodavanje/izmenu/brisanje repozitorijuma
+src/main/java/com/openpuzzles/op/web/rest/op/dashoard/SourceResource.java
+
+sinhronizacija foldera tj repozitorijuma
+src/main/java/com/openpuzzles/op/web/rest/op/dashoard/SyncFolderResource.java
+
+push dokumenta na repozitorijum
+src/main/java/com/openpuzzles/op/web/rest/op/document/toc/generate/GenerateResource.java
+
+Sta nam treba od API operacija
+1. Dodavanje repository-ja treba da ide sa tokenom umesto username / password -
+   https://gitlab.com/tech-tailors/products/puzzles-cloud/puzzles-cloud-issues/-/issues/29
+2. Output folder za git je isto sto i FolderType.DESTINATION u code-u
+3. Template cuvamo samo u bazi, vise ne koristimo FolderType.TEMPLATE
+4. Za UI nam treba lista branche-va za git source
+5. Djole je namestio da se automatski kreira source i output folder
+6. DocumentTreeResource je API koji vraca za dashboard sources i foldere
+7. Trenutno se svi fajlovi iz foldera prikazuju flat, treba da ubacimo tree struktura
+8. Ne postoji upload source fajlova. Samo sync kroz pull akciju.
+
+
+Spring update
+- liquibase problem -> staviti valueSequenceNext u createTable elementu i u svakoj bazi sa problemom u tabeli databasechangelog ubaciti novi checksum za change set koji je problematican.
+
+VTC voucher code je EAN koji dobijamo sa VTC-a - voucher1.setCode( voucher.getEan() );
+Mimas voucher code je product code koji dobijamo sa Mimasa - voucher.setCode( mimasVoucher.getCode() );
+
+MimasVoucher to Voucher:
+<ProductId>200</ProductId>
+<ProductCode>TMOBDE15</ProductCode>                             code
+<ProductName>Telekom 15</ProductName>                           name
+<ShortName>Telekom 15</ShortName>                               shortName
+<Value>1500</Value>                                             mimasOrderValue, value - BigDecimal.valueOf(mimasVoucher.getValue(), mimasVoucher.getDecimals()).doubleValue()
+<CodeMask>#### #### #### ####</CodeMask>
+<EanCode>40514420</EanCode>                                     eanCode
+<ProviderCode>TELECOM-D1</ProviderCode>                         providerCode
+<ProviderName>Telekom-D1</ProviderName>                         providerName
+<EncryptionType>0</EncryptionType>                              encryptionType
+<ProductType>4</ProductType>                                    productType
+<CountryCode>DE</CountryCode>
+<ProductGroup>DEWEBSHOP</ProductGroup>
+<Decimals>2</Decimals>
+<Currency>EUR</Currency>                                        currency
+<BasePrice>1500</BasePrice>                                     basePrice - BigDecimal.valueOf(mimasVoucher.getBasePrice(), mimasVoucher.getDecimals()).doubleValue());
+<FeeAmount>195</FeeAmount>                                      priceFee - BigDecimal.valueOf(mimasVoucher.getFeeAmount(), mimasVoucher.getDecimals()).doubleValue());
+<VatAmount>0</VatAmount>                                        priceTax - BigDecimal.valueOf(mimasVoucher.getVatAmount(), mimasVoucher.getDecimals()).doubleValue());
+<TotalAmount>1695</TotalAmount>                                 priceTotal - BigDecimal.valueOf(mimasVoucher.getTotalAmount(), mimasVoucher.getDecimals()).doubleValue());
+<WarningType>1</WarningType>
+<PayMethodList>
+	<ProductPayMethodData_1_0>
+		<PayMethodId>15</PayMethodId>
+		<PayMethodCode>WIRECARD-SOFORT</PayMethodCode>
+		<PspId>1</PspId>
+		<PspCode>WIRECARD</PspCode>
+		<CurrencyCode>EUR</CurrencyCode>
+		<Decimals>2</Decimals>
+		<FeeAmountFixed>50</FeeAmountFixed>
+		<FeeAmountFactor>3.250</FeeAmountFactor>
+	</ProductPayMethodData_1_0>
+</PayMethodList>
+
+
+Voucher to VoucherOrder:
+private Long id;
+private UUID uuid;
+private Double basePrice;
+private String code;
+private String currency;
+private String eanCode;
+private Short encryptionType;
+private String name;
+private Double priceFee;
+private Double priceTax;
+private Double priceTotal;
+private Short productType;
+private String providerCode;
+private String providerName;
+private String shopId;
+private String shortName;
+private Double value;
+private Long mimasOrderValue;
+private VoucherProvider voucherProvider;
+private String logoFile;
+private Date createdDate;
+private Date modifiedDate;
+
+
+-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog -Dorg.apache.commons.logging.simplelog.showdatetime=true -Dorg.apache.commons.logging.simplelog.log.httpclient.wire=debug -Dorg.apache.commons.logging.simplelog.log.org.apache.commons.httpclient=debug
+
+-Dorg.apache.commons.logging.simplelog.log.httpclient.wire=debug -Dorg.apache.commons.logging.simplelog.log.org.apache.commons.httpclient=debug
+
+VerifyPayment must be true
+PayMethodId must exist in the [PayMethod] table
+PaymentMerchant must exist in the [PayProvider] table
+The endpoint must contain the keyword ‘webhook’, like ‘AdyenWebhook’
+The PaymentMerchant must be equal to merchantAccountCode (eg. “10478-10384-20873-92938")
+The PaymentUUID must be equal to the pspReference (eg. "2020111013430101")
+The orderRef must be equal to the merchantReference (eg. "2020111013430102")
+
+
+docker run -it --rm --name ivica -v /home/ivojinovic/nginx-data/etc/letsencrypt/:/etc/letsencrypt/ -v /home/ivojinovic/nginx-data/etc/nginx/:/etc/nginx/ -p 2080:80 -p 2443:443 nginx
+
+docker run -it --rm --name ivica -v /home/ivojinovic/nginx-data/etc/letsencrypt/:/etc/letsencrypt/ -v /home/ivojinovic/nginx-data/etc/nginx/:/etc/nginx/ --hostname="reverse" -p 2080:80 -p 2443:443 nginx
+
+docker run -it --rm --name ivica -v /opt/nginx/letsencrypt/:/etc/letsencrypt/ -v /opt/nginx/config/:/etc/nginx/ -p 2080:80 -p 2443:443 ivojinovic/tailors:nginx-python3
+
+docker run -it --rm --name ivica -v /opt/nginx/letsencrypt/:/etc/letsencrypt/ -v /opt/nginx/config/:/etc/nginx/ --network host ivojinovic/tailors:nginx-python
+
+
+certbot --dry-run certonly --nginx -d alertgen.techtailors.rs
+certbot --nginx -d alertgen.techtailors.rs
+
+docker run -it --rm -p 8090 -e PC_DATABASE_HOST=postgres-puzzles -e PC_DATABASE_USERNAME=postgres --name pc-admin --network puzzles --rm ivojinovic/tailors:pc-admin-01-fixes-for-startup
+
+docker run -d --restart unless-stopped --name selenoid --network selenoid -p 4444:4444 -v /var/run/docker.sock:/var/run/docker.sock -v /opt/selenoid/config/:/etc/selenoid/:ro aerokube/selenoid:latest-release -container-network selenoid
+
+docker run -it --rm --name selenoid -p 4444:4444 --network selenoid -v /var/run/docker.sock:/var/run/docker.sock -v /opt/selenoid/config/:/etc/selenoid/:ro aerokube/selenoid:latest-release  -container-network selenoid
+
+Selenoid UI
+docker run -d --restart unless-stopped --name selenoid-ui --network selenoid -p 14444:8080 aerokube/selenoid-ui --selenoid-uri http://selenoid:4444
+
+docker run -it --rm --name selenoid-ui --network selenoid -p 14444:8080 aerokube/selenoid-ui --selenoid-uri http://selenoid:4444
+
+Port forwarding
+ssh -N -L localhost:14444:localhost:14444 htz-debian
+
+
+docker run -d --restart unless-stopped --name postgres-puzzles --network puzzles -e POSTGRES_PASSWORD=p0str3333s -p 5432:5432 ivojinovic/tailors:postgres-general
+
+
+=====
+docker run --name gradle-cache -it --rm --user $UID -v /Users/ivojinovic/Downloads/gradle-cache:/data -publish 80:5071 gradle/build-cache-node:9.1
+
+docker run -d -p 9200:9200 -p 9300:9300 --name elastic --restart unless-stopped -v /opt/elastic/data:/usr/share/elasticsearch/data -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+
+docker run -it --rm -p 9200:9200 -p 9300:9300 --name elastic -v /opt/elastic/data:/usr/share/elasticsearch/data -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+
+docker run -it --rm -p 9200:9200 -p 9300:9300 --name elastic -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+
+ActiveMQ
+docker run -it --rm --name activemq_puzzles --network puzzles -p 61616:61616 -p 8161:8161 rmohr/activemq
